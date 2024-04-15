@@ -1,0 +1,23 @@
+@import '../../sizes.scss';
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .login-container{
+        .title-container{
+            margin-top: 5rem;
+        }
+        
+        .login-container{
+            margin-top: 2rem;
+        }
+        .actions-section {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+    
+}

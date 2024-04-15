@@ -1,0 +1,50 @@
+<main>
+    <div class="title-container">
+        <h1 class="po-font-title">Task manager</h1>
+        <p class="po-font-text">A simple way to manage your tasks</p>
+    </div>
+    <div class="login-container w-40">
+        <section class="login-form-section">
+            <po-login
+                name="login"
+                [(ngModel)]="login"
+                p-label="E-mail"
+                p-placeholder="E-mail"
+                p-clean
+                p-required
+            ></po-login>
+            <po-password
+                name="password"
+                [(ngModel)]="password"
+                p-label="Password"
+                p-placeholder="Password"
+                p-required
+                [p-minlength]="minLength"
+            ></po-password>
+        </section>
+
+        <div class="actions-section">
+            <po-button
+                class="singin-btn po-mt-2"
+                p-label="Signin"
+                p-tooltip="Click to Signin!"
+            ></po-button>
+            <po-button
+                class="singup-btn po-mt-2 po-mb-2 po-ml-1"
+                p-label="Signup"
+                p-kind="primary"
+                p-tooltip="Click to register yourself!"
+                (p-click)="onSignUpClick()"
+            ></po-button>
+        </div>
+    </div>
+
+    <po-modal
+        #createUserModal
+        p-title="Create your account"
+        p-icon="po-icon-user"
+        p-size="xl"
+    >
+        <create-user></create-user> 
+    </po-modal>
+</main>
