@@ -7,13 +7,15 @@ import { AuthDto } from './dto';
 import { CreateUserDto } from './dto/create.user.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { randomUUID } from 'crypto';
+import { EmailService } from 'src/email/email/email.service';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
     constructor(
         private _prisma: PrismaService,
         private _jwt: JwtService,
-        private _config: ConfigService
+        private _config: ConfigService,
+        private _emailService: EmailService
     ) {}
     onModuleInit() {
     }
@@ -42,9 +44,12 @@ export class AuthService implements OnModuleInit {
                 select: {
                     id: true,
                     email: true,
-                    createdAt: true
+                    createdAt: true,
+                    validateEmailToken: true,
                 }
             })
+
+            await this._emailService.sendEmail(user.email, user.validateEmailToken);
 
             return this.signToken(user.id, user.email);
         } catch (err) {
