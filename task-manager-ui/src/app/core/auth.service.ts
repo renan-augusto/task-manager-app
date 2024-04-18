@@ -14,7 +14,7 @@ export class AuthService {
   private baseUrl = environment.baseURL;
 
   userSingup(user: UserRequest) {
-    return this._http.post<UserResponse>(`${this.baseUrl}auth/singup`, user)
+    return this._http.post<UserResponse>(`${this.baseUrl}auth/signup`, user)
   }
   
 }
