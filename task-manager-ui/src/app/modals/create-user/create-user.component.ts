@@ -1,25 +1,24 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { PoButtonModule, PoDividerModule, PoDynamicFormField, PoDynamicModule, PoFieldModule, PoLoadingModule } from '@po-ui/ng-components';
+import { PoButtonModule, PoDividerModule, PoDynamicFormField, PoDynamicModule, PoFieldModule, PoHttpInterceptorModule, PoLoadingModule, PoModalModule } from '@po-ui/ng-components';
 import { AbstractControl, FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth.service';
 import { UserRequest } from '../../models/user-request.interface';
-import { CommonModule } from '@angular/common';
 import { LoadComponent } from '../../shared/load/load.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'create-user',
   standalone: true,
   imports: [
     PoDynamicModule,
-    FormsModule, 
-    ReactiveFormsModule, 
     PoButtonModule,
     PoDividerModule,
     PoFieldModule,
     PoLoadingModule,
-    CommonModule,
-    LoadComponent
+    LoadComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    PoModalModule
   ],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.scss',
@@ -31,8 +30,8 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   fields: PoDynamicFormField[] = [];
   formResponse!: NgForm;
   registerUserForm: FormGroup;
-  loading: boolean = false;
-  
+
+  authSubscription?: Subscription
   
   constructor(
     private _authService: AuthService
@@ -55,25 +54,19 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   }
 
   onFormSubmit() {
-    this.loading = true;
     if(this.registerUserForm.valid) {
       const payload: UserRequest = this.createUserRequest();
 
-      this._authService.userSingup(payload).subscribe({
+      this.authSubscription = this._authService.userSingnup(payload).subscribe({
         next: () => {
           this.registerUserForm.reset();
-          this.loading = false;
           this.onFormSucccess.emit(true);
         },
         error: (error) => {
           console.error('Error submiting the form', error);
-          this.loading = false;
         }
       });
-    } else {
-      this.loading = false;
     }
-    
   }
 
   passwordMatchvalidator(control: AbstractControl){
@@ -92,7 +85,9 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    
+    if(this.authSubscription) {
+      this.authSubscription?.unsubscribe()
+    }
   }
   
 
