@@ -51,7 +51,7 @@ export class AuthService implements OnModuleInit {
 
             await this._emailService.sendEmail(user.email, user.validateEmailToken);
 
-            return this.signToken(user.id, user.email);
+            return user;
         } catch (err) {
             if(err instanceof PrismaClientKnownRequestError) {
                 if(err.code === 'P2002') {
