@@ -2,12 +2,12 @@ import { ForbiddenException, Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
-import { PrismaService } from 'src/prisma/prisma/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
 import { CreateUserDto } from './dto/create.user.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { randomUUID } from 'crypto';
-import { EmailService } from 'src/email/email/email.service';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthService implements OnModuleInit {

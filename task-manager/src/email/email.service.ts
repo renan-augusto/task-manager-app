@@ -22,7 +22,7 @@ export class EmailService {
                     <h1 style="color: #333333; font-size: 24px;">Welcome to the task manager app!</h1>
                     <p style="color #666666; font-size: 16px;">Please, confirm your account by clicking on the link bellow to access the platform</p>
                     <div style:"margin-top: 20px; text-align: center;">
-                        <p>aplicacaobrabao.com/${emailToken}</p>
+                        <p>aplicacaobrabao.com/confirm/${emailToken}</p>
                     </div>
                 </div>
             `
