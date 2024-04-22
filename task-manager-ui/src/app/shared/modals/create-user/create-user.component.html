@@ -1,0 +1,44 @@
+<main>
+    <div class="title-container">
+        <h1 class="po-font-title">Register</h1>
+        <p class="po-font-text">Please enter the informations bellow to register yourself</p>
+    </div>
+
+    <form [formGroup]="registerUserForm">
+        <div class="form-container">
+            <div class="personal-data-container po-pt-2">
+                <po-divider class="po-xl-12 po-lg-12 po-md-12 po-sm-12" p-border-width="medium" p-label="Personal data" />
+
+                <po-input class="po-xl-6 po-lg-6 po-md-6 po-sm-6" name="name" id="name" p-label="Name" p-placeholder="Name" p-required formControlName="name"/>
+
+                <po-input class="po-xl-6 po-lg-6 po-md-6 po-sm-6" name="lastName" id="lastName" p-label="Last name" p-placeholder="Name" p-required formControlName="lastName"/>
+            </div>
+            <div class="psw-container">
+                <po-divider class="po-xl-12 po-lg-12 po-md-12 po-sm-12" p-border-width="medium" p-label="Login data" />
+
+                <po-input class="po-xl-12 po-lg-12 po-md-12 po-sm-12" name="email" id="email" p-label="E-mail" p-placeholder="E-mail" p-required formControlName="email"/>
+                
+                <div class="psw-validator">
+                    
+                    <po-password class="po-xl-6 po-lg-6 po-md-6 po-sm-6" name="password" id="password" p-label="Password" p-placeholder="Password" p-required formControlName="password"/>
+
+                    <po-password class="po-xl-6 po-lg-6 po-md-6 po-sm-6" name="confirmPassword" id="confirmPassword" p-label="Confirm password" p-placeholder="Confirm password" p-required formControlName="confirmPassword"/>
+
+                    @if(registerUserForm.errors?.['mismatch'] && registerUserForm.get('confirmPassword')?.touched) {
+                        <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 psw-err">
+                            <p class=" po-font-text-uppercase psw-error">
+                                Password should match
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>        
+        </div>
+    </form>
+    <po-button
+        class="po-xl-2 po-lg-2 po-md-2 po-sm-2"
+        p-label="Submit"
+        (p-click)="onFormSubmit()"
+        [p-disabled]="!registerUserForm.valid"
+    />
+</main>
