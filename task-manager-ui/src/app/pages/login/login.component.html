@@ -8,7 +8,6 @@
             <form [formGroup]="userLoginForm">
                 <po-login
                     name="login"
-                    [(ngModel)]="login"
                     p-label="E-mail"
                     p-placeholder="E-mail"
                     p-clean
@@ -17,7 +16,6 @@
                 ></po-login>
                 <po-password
                     name="password"
-                    [(ngModel)]="password"
                     p-label="Password"
                     p-placeholder="Password"
                     p-required

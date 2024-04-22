@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PoButtonModule, PoFieldModule, PoModalComponent, PoModalModule, PoNotificationModule, PoNotificationService, PoTooltipModule } from '@po-ui/ng-components';
-import { CreateUserComponent } from '../../modals/create-user/create-user.component';
+import { PoButtonModule, PoFieldModule, PoInterceptorsModule, PoModalComponent, PoModalModule, PoNotificationModule, PoNotificationService, PoTooltipModule } from '@po-ui/ng-components';
+import { CreateUserComponent } from '../../shared/modals/create-user/create-user.component';
 import { UserAuthRequest } from '../../models/user-auth-request.interface';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
+import { MenuComponent } from '../../shared/menu/menu.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -18,6 +20,7 @@ import { AuthService } from '../../core/auth.service';
     PoTooltipModule, 
     PoModalModule,
     PoNotificationModule,
+    MenuComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -34,7 +37,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     public notification: PoNotificationService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _router: Router,
   ) {
     this.userLoginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -56,12 +60,21 @@ export class LoginComponent implements OnInit, OnDestroy {
       const payload: UserAuthRequest = this.createAuthRequest();
 
       this.loginSubscription = this._authService.userSignin(payload).subscribe({
-        next: () => {
-          this.notification.success('User logged in');
+        next: (res) => {
+          window.localStorage.setItem('token', res.access_token);
+          this._authService.isLoggedin.set(true);
+          this._router.navigate(['']);
+          this.notification.success('Welcome!');
           this.userLoginForm.reset();
         },
-        error: (error) => {
-          console.error('Login error', error);
+        error: (err) => {
+          if(err.error.message) {
+            this.notification.error(err.error.message);
+          } else {
+            this.notification.error('Server error')
+          }
+          this._authService.isLoggedin.set(false);
+          console.error('Login error', err);
         }
       })
 
@@ -85,6 +98,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+    if(this.loginSubscription) {
+      this.loginSubscription.unsubscribe();
+    }
   }
 }
