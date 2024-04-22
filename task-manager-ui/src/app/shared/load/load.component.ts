@@ -13,7 +13,6 @@ import { PoLoadingModule } from '@po-ui/ng-components';
   ],
   templateUrl: './load.component.html',
   styleUrl: './load.component.scss',
-  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class LoadComponent {
 

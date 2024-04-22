@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { PoButtonModule, PoDividerModule, PoDynamicFormField, PoDynamicModule, PoFieldModule, PoHttpInterceptorModule, PoLoadingModule, PoModalModule, PoNotificationService } from '@po-ui/ng-components';
 import { AbstractControl, FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth.service';
-import { UserRequest } from '../../../models/user-request.interface';
+import { IUserRequest } from '../../../models/user-request.interface';
 import { LoadComponent } from '../../load/load.component';
 import { Subscription } from 'rxjs';
 
@@ -56,7 +56,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
 
   onFormSubmit() {
     if(this.registerUserForm.valid) {
-      const payload: UserRequest = this.createUserRequest();
+      const payload: IUserRequest = this.createUserRequest();
 
       this.authSubscription = this._authService.userSingnup(payload).subscribe({
         next: () => {
@@ -77,7 +77,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
     : {mismatch: true}
   }
 
-  createUserRequest(): UserRequest {
+  createUserRequest(): IUserRequest {
     return {
       email: this.registerUserForm.get('email')?.value.trim(),
       password: this.registerUserForm.get('password')?.value.trim(),

@@ -1,6 +1,6 @@
-import { BaseUser } from "./base-user.interface";
+import { IBaseUser } from "./base-user.interface";
 
-export interface UserRequest extends BaseUser{
+export interface IUserRequest extends IBaseUser {
     firstName: string;
     lastName: string
 }

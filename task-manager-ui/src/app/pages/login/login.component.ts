@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PoButtonModule, PoFieldModule, PoInterceptorsModule, PoModalComponent, PoModalModule, PoNotificationModule, PoNotificationService, PoTooltipModule } from '@po-ui/ng-components';
 import { CreateUserComponent } from '../../shared/modals/create-user/create-user.component';
-import { UserAuthRequest } from '../../models/user-auth-request.interface';
+import { IUserAuthRequest } from '../../models/user-auth-request.interface';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { MenuComponent } from '../../shared/menu/menu.component';
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSignInClick() {
     if(this.userLoginForm.valid) {
-      const payload: UserAuthRequest = this.createAuthRequest();
+      const payload: IUserAuthRequest = this.createAuthRequest();
 
       this.loginSubscription = this._authService.userSignin(payload).subscribe({
         next: (res) => {
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  createAuthRequest(): UserAuthRequest {
+  createAuthRequest(): IUserAuthRequest {
     return {
       email: this.userLoginForm.get('email')?.value.trim(),
       password: this.userLoginForm.get('password')?.value.trim()
