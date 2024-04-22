@@ -5,11 +5,3 @@ export class JwtGuard extends AuthGuard('jwt') {
     super()
   }
 }
-
-// export class JwtGuard implements CanActivate {
-//   canActivate(
-//     context: ExecutionContext,
-//   ): boolean | Promise<boolean> | Observable<boolean> {
-//     return true;
-//   }
-// }
