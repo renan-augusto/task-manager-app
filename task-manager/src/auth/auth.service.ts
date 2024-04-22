@@ -90,23 +90,21 @@ export class AuthService implements OnModuleInit {
 
     }
 
+    async signToken(userId: number, email: string): Promise<{access_token: string}> {
+        const payload = {
+            sub: userId,
+            email
+        };
 
+        const secret = this._config.get('JWT_SECRET')
 
-  async signToken(userId: number, email: string): Promise<{access_token: string}> {
-    const payload = {
-        sub: userId,
-        email
-    };
+        const token = await this._jwt.signAsync(payload, {
+            expiresIn: '25min',
+            secret: secret
+        });
 
-    const secret = this._config.get('JWT_SECRET')
-
-    const token = await this._jwt.signAsync(payload, {
-        expiresIn: '25min',
-        secret: secret
-    });
-
-    return {
-        access_token: token,
-    };
-  }
+        return {
+            access_token: token,
+        };
+    }
 }
