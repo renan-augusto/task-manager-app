@@ -30,3 +30,13 @@ model User {
 
   @@map("users")
 }
+
+model Menu {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  label String @unique
+  action String
+  icon String
+}
