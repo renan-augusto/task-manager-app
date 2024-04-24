@@ -28,6 +28,8 @@ model User {
   validateEmail Boolean @default(false)
   validateEmailToken String?
 
+  tasks Task[]
+
   @@map("users")
 }
 
@@ -39,4 +41,24 @@ model Menu {
   label String @unique
   action String
   icon String
+
+  @@map("menus")
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title String
+  description String
+  completedAt DateTime?
+  completed Boolean @default(false)
+
+  userId Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("tasks")
+
 }
