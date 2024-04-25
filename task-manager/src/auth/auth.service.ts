@@ -8,6 +8,7 @@ import { CreateUserDto } from './dto/create.user.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { randomUUID } from 'crypto';
 import { EmailService } from 'src/email/email.service';
+import { IUserLogged } from 'src/interfaces/user-logged.interface';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -58,7 +59,7 @@ export class AuthService implements OnModuleInit {
                     throw new ForbiddenException('Credentials already taken')
                 }
             }
-            throw err
+            throw err;
         }
     }
 
@@ -85,8 +86,15 @@ export class AuthService implements OnModuleInit {
                 'Incorrect credentials'
             );
         };
+        
+        const token = await this.signToken(user.id, user.email)
 
-        return this.signToken(user.id, user.email);
+        const userLogged: IUserLogged = {
+            access_token: token.access_token,
+            id: user.id
+        }
+        
+        return userLogged;
 
     }
 

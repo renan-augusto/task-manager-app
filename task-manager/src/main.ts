@@ -17,6 +17,7 @@ async function bootstrap() {
     .setTitle('Task manager')
     .setDescription('A simple way to manager your tasks')
     .setVersion('0.0.1')
+    .addBearerAuth()
     .build();
   
   const document = SwaggerModule.createDocument(app, docConfig);
