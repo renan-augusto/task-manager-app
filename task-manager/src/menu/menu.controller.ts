@@ -1,7 +1,9 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { MenuService } from './menu.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('menu')
 @Controller('menu')
 export class MenuController {
     

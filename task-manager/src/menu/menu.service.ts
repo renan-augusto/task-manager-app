@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Menu } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
