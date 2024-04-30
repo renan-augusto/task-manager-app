@@ -6,8 +6,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
 import { CreateUserDto } from './dto/create.user.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { randomUUID } from 'crypto';
-import { EmailService } from 'src/email/email.service';
 import { IUserLogged } from 'src/interfaces/user-logged.interface';
 
 @Injectable()
@@ -16,7 +14,6 @@ export class AuthService implements OnModuleInit {
         private _prisma: PrismaService,
         private _jwt: JwtService,
         private _config: ConfigService,
-        private _emailService: EmailService
     ) {}
     onModuleInit() {
     }
@@ -40,17 +37,13 @@ export class AuthService implements OnModuleInit {
                     hash,
                     firstName: dto.firstName.toLowerCase(),
                     lastName: dto.lastName.toLowerCase(),
-                    validateEmailToken: randomUUID(),
                 },
                 select: {
                     id: true,
                     email: true,
                     createdAt: true,
-                    validateEmailToken: true,
                 }
             })
-
-            await this._emailService.sendEmail(user.email, user.validateEmailToken);
 
             return user;
         } catch (err) {

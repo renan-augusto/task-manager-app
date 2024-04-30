@@ -1,14 +1,27 @@
-import { Body, Controller, Delete, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { TaskService } from './task.service';
 import { JwtGuard } from 'src/auth/guard';
 import { TaskDto } from './dto';
+import { UpdateTaskDto } from './dto';
 
 @ApiTags('task')
 @Controller('task')
 export class TaskController {
 
     constructor(private _taskService: TaskService) {}
+
+    @UseGuards(JwtGuard)
+    @Get('get-by-id')
+    getTaskById(@Query('id') id: string) {
+        return this._taskService.getById(id);
+    }
+
+    @UseGuards(JwtGuard)
+    @Get('get-tasks')
+    getTasks(@Query('userId') id: string) {
+        return this._taskService.getTasks(id);
+    }
 
     @UseGuards(JwtGuard)
     @Post('create-task')
@@ -18,13 +31,13 @@ export class TaskController {
 
     @UseGuards(JwtGuard)
     @Put('update-task')
-    updateTask() {
-        
+    updateTask(@Body() dto: UpdateTaskDto) {
+        return this._taskService.updateTask(dto)
     }
 
     @UseGuards(JwtGuard)
     @Delete('delete-task')
-    deleteTask() {
-        
+    deleteTask(@Query('taskId') id: string) {
+        return this._taskService.deleteTask(id)
     }
 }

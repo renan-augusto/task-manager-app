@@ -24,9 +24,6 @@ model User {
 
   firstName String
   lastName String
-  
-  validateEmail Boolean @default(false)
-  validateEmailToken String?
 
   tasks Task[]
 
