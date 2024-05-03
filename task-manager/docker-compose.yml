@@ -1,15 +1,14 @@
 version: '3.8'
-
 services:
   dev-db:
-    image: postgres:13.5
+    image: postgres:13
     environment:
       POSTGRES_USER: task-manager
       POSTGRES_PASSWORD: m0n54u7us53mper4lt11us
       POSTGRES_DB: task-api-db
     ports:
-      - "5434:5432"
+      - 5432:5432
     networks:
-      - task-network
+      - taskmanager
 networks:
-  task-network:
+  taskmanager:

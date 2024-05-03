@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: task-manager
+      POSTGRES_PASSWORD: m0n54u7us53mper4lt11us
+      POSTGRES_DB: task-api-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  
+  nestjs:
+    build:
+      context: ./task-manager
+      dockerfile: Dockerfile
+    env_file:
+      - ./task-manager/.env
+    depends_on:
+      - postgres
+    ports:
+      - "5000:5000"
+    command: bash -c "npx prisma db push && npm run start:dev"
+  
+  angular:
+    build:
+      context: ./task-manager-ui
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    depends_on:
+      - nestjs
+volumes:
+  postgres-data:
