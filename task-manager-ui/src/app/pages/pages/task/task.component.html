@@ -1,0 +1,16 @@
+<main>
+    <po-button 
+        p-label="Criar task"
+        p-icon="po-icon po-icon-plus"
+        p-kind="primary"
+        (p-click)="openCreateModal()"
+    />
+    
+    <po-modal
+        #createTaskModal
+        p-title="Criar task"
+        p-size="xl"
+    >
+        <create-task (onFormSuccess)="onTaskCreatedSuccess()"></create-task>
+    </po-modal>
+</main>

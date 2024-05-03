@@ -62,9 +62,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.loginSubscription = this._authService.userSignin(payload).subscribe({
         next: (res) => {
           window.localStorage.setItem('token', res.access_token);
-          this._authService.isLoggedin.set(true);
+          window.localStorage.setItem('id_user', res.id.toString());
           this._router.navigate(['']);
-          this.notification.success('Welcome!');
+          this.notification.success('Bem vindo!');
           this.userLoginForm.reset();
         },
         error: (err) => {
@@ -73,7 +73,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           } else {
             this.notification.error('Server error')
           }
-          this._authService.isLoggedin.set(false);
           console.error('Login error', err);
         }
       })
@@ -83,7 +82,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onFormSuccess(event: boolean) {
     if(event == true) {
-      this.notification.success('User created!');
+      this.notification.success('Usuário cadastrado!');
       return this.createUserModal?.close();
     } else {
       return

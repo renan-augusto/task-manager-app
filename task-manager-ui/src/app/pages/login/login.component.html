@@ -1,7 +1,7 @@
 <main>
     <div class="title-container">
         <h1 class="po-font-title">Task manager</h1>
-        <p class="po-font-text">A simple way to manage your tasks</p>
+        <p class="po-font-text">Controle suas tarefas de maneira simples</p>
     </div>
     <div class="login-container w-40">
         <section class="login-form-section">
@@ -16,8 +16,8 @@
                 ></po-login>
                 <po-password
                     name="password"
-                    p-label="Password"
-                    p-placeholder="Password"
+                    p-label="Senha"
+                    p-placeholder="Senha"
                     p-required
                     [p-minlength]="minLength"
                     formControlName="password"
@@ -28,16 +28,16 @@
         <div class="actions-section">
             <po-button
                 class="singin-btn po-mt-2"
-                p-label="Signin"
-                p-tooltip="Click to Signin!"
+                p-label="Login"
+                p-tooltip="Clique para entrar"
                 [p-disabled]="!userLoginForm.valid"
                 (p-click)="onSignInClick()"
             ></po-button>
             <po-button
                 class="singup-btn po-mt-2 po-mb-2 po-ml-1"
-                p-label="Signup"
+                p-label="Cadastre-se"
                 p-kind="primary"
-                p-tooltip="Click to register yourself!"
+                p-tooltip="Click para se cadastrar"
                 (p-click)="onSignUpClick()"
             ></po-button>
         </div>
@@ -45,13 +45,13 @@
 
     <po-modal
         #createUserModal
-        p-title="Create your account"
+        p-title="Crie sua conta"
         p-icon="po-icon-user"
         p-size="xl"
     >
         <create-user (onFormSucccess)="onFormSuccess($event)"></create-user> 
         <po-modal-footer>
-            <po-button p-label="Close" (p-click)="createUserModal.close()"></po-button>
+            <po-button p-label="Fechar" (p-click)="createUserModal.close()"></po-button>
         </po-modal-footer>
     </po-modal>
 </main>

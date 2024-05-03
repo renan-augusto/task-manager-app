@@ -1,0 +1,42 @@
+<main>
+    <form [formGroup]="createTaskForm">
+        <div class="form-container">
+            <div class="task-data-container po-pt-2">
+                <po-input
+                    class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+                    name="title"
+                    id="title"
+                    p-label="Título"
+                    p-placeholder="Title"
+                    p-required
+                    formControlName="title"
+                />
+                <po-switch 
+                    class="po-xl-6 po-lg-6 po-md-12 po-sm-12" 
+                    name="completed" 
+                    id="completed" 
+                    p-label="Finalizada?"
+                    p-label-on="Sim"
+                    p-label-off="Não"
+                    formControlName="completed"
+                />
+                <po-textarea
+                    class="po-xl-12 po-lg-12 po-md-12 po-sm-12"
+                    p-placeholder="Descrição"
+                    p-label="Descrição"
+                    [p-rows]="2"
+                    name="description"
+                    id="description"
+                    formControlName="description"
+                />
+            </div>
+        </div>
+    </form>
+    <po-button
+        class="po-xl-2 po-lg-2 po-md-12 po-sm-12"
+        p-label="Criar!"
+        [p-disabled]="!createTaskForm.valid"
+        (p-click)="onCreateSubmit()"
+        
+    />
+</main>
