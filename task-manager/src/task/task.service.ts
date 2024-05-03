@@ -52,7 +52,7 @@ export class TaskService {
         } catch (err) {
             if (err instanceof PrismaClientKnownRequestError) {
                 if(err.code === 'P2012') {
-                    throw new ForbiddenException('Missing data');
+                    throw new ForbiddenException('Dados não informados.');
                 }
             }
             throw(err)
@@ -82,7 +82,7 @@ export class TaskService {
         } catch (err) {
             if(err instanceof PrismaClientKnownRequestError) {
                 if(err.code === 'P2012') {
-                    throw new ForbiddenException('Missing data');
+                    throw new ForbiddenException('Dados não informados.');
                 }
             }
 
@@ -116,7 +116,7 @@ export class TaskService {
         } catch (err) {
             if (err instanceof PrismaClientKnownRequestError) {
                 if(err.code === 'P2012') {
-                    throw new ForbiddenException('Missing data');
+                    throw new ForbiddenException('Dados não informados.');
                 }
             }
 
@@ -135,10 +135,10 @@ export class TaskService {
             });
 
             if(!task) {
-                throw new Error('Task not found');
+                throw new Error('Task não encontrada.');
             }
 
-            return {message: 'Task deleted'};
+            return {message: 'Task deletada.'};
         } catch (err) {
             throw(err);
         }

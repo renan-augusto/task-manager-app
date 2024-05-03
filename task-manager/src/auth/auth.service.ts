@@ -25,10 +25,10 @@ export class AuthService implements OnModuleInit {
             const nameValidationRegex = /^[a-zA-Z\s\-']+$/;
 
             if(!nameValidationRegex.test(dto.firstName) || !nameValidationRegex.test(dto.lastName)) {
-                throw new ForbiddenException('First name or last name should not contains special chars');
+                throw new ForbiddenException('Nome e sobrenome não devem conter caracteres especiais');
             }
             if(dto.firstName.includes(' ') || dto.lastName.includes(' ')) {
-                throw new ForbiddenException('Only single first and last names are allowed');
+                throw new ForbiddenException('Apenas o primeiro nome é permitido');
             }
 
             const user = await this._prisma.user.create({
@@ -49,7 +49,7 @@ export class AuthService implements OnModuleInit {
         } catch (err) {
             if(err instanceof PrismaClientKnownRequestError) {
                 if(err.code === 'P2002') {
-                    throw new ForbiddenException('Credentials already taken')
+                    throw new ForbiddenException('Credenciais já utilizadas')
                 }
             }
             throw err;
@@ -65,7 +65,7 @@ export class AuthService implements OnModuleInit {
 
         if(!user) {
             throw new ForbiddenException(
-                'Credentials incorrect',
+                'Credenciais incorretas!',
             );
         };
 
@@ -76,7 +76,7 @@ export class AuthService implements OnModuleInit {
 
         if(!pswMatches) {
             throw new ForbiddenException(
-                'Incorrect credentials'
+                'Credenciais incorretas!'
             );
         };
         
@@ -100,7 +100,7 @@ export class AuthService implements OnModuleInit {
         const secret = this._config.get('JWT_SECRET')
 
         const token = await this._jwt.signAsync(payload, {
-            expiresIn: '25min',
+            expiresIn: '60min',
             secret: secret
         });
 
