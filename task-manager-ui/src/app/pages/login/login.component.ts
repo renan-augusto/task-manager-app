@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { MenuComponent } from '../../shared/menu/menu.component';
 import { Router } from '@angular/router';
+import { wordsCapitalizer } from '../../utils';
 
 @Component({
   selector: 'login',
@@ -62,9 +63,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.loginSubscription = this._authService.userSignin(payload).subscribe({
         next: (res) => {
           window.localStorage.setItem('token', res.access_token);
-          window.localStorage.setItem('id_user', res.id.toString());
+          window.localStorage.setItem('userId', res.id.toString());
+          window.localStorage.setItem('userName', res.name);
           this._router.navigate(['']);
-          this.notification.success('Bem vindo!');
+          this.notification.success(`Bem vindo ${wordsCapitalizer(res.name)}!`);
           this.userLoginForm.reset();
         },
         error: (err) => {
