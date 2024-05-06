@@ -10,4 +10,5 @@ export interface ITaskRequest extends ITask {
 
 export interface ITaskResponse extends ITaskRequest {
     completedAt: Date,
+    createdAt: Date
 }

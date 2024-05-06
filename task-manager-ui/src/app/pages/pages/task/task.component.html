@@ -1,15 +1,34 @@
 <main>
-    <po-button 
-        p-label="Criar task"
-        p-icon="po-icon po-icon-plus"
-        p-kind="primary"
-        (p-click)="openCreateModal()"
-    />
+    <div class="title-container">
+        <p class="po-font-title">{{'tasks' | titlecase}}</p>
+        <p class="po-font-text-large">Utilize as opções abaixo para gerenciar suas tasks</p>
+    </div>
+
+    <div class="action-container">
+        <po-button 
+            p-label="Criar task"
+            p-icon="po-icon po-icon-plus"
+            p-kind="primary"
+            (p-click)="openCreateModal()"
+        />
+    </div>
+
+    <div class="table-container po-pt-5 po-xl-12 po-lg-12 po-md-12 po-sm-12">
+        <po-table
+            [p-columns]="tasksTableColumns"
+            [p-items]="tasks"
+            [p-actions]="actions"
+            [p-hide-columns-manager]="true"
+            [p-hide-table-search]="false"
+            [p-sort]="true"
+        />
+    </div>
     
     <po-modal
         #createTaskModal
         p-title="Criar task"
         p-size="xl"
+        (p-close)="onTaskCreateModalClose()"
     >
         <create-task (onFormSuccess)="onTaskCreatedSuccess()"></create-task>
     </po-modal>

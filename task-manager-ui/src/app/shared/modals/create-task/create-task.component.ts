@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PoButtonModule, PoDividerModule, PoFieldModule, PoLoadingModule, PoModalModule, PoNotificationModule, PoNotificationService } from '@po-ui/ng-components';
+import { PoButtonModule, PoDividerModule, PoFieldModule, PoLoadingModule, PoModalModule, PoNotificationModule, PoNotificationService, PoToasterOrientation } from '@po-ui/ng-components';
 import { TaskService } from '../../../core/task.service';
 import { ITaskRequest } from '../../../models/task.interface';
 import { Subscription } from 'rxjs';
@@ -49,7 +49,7 @@ export class CreateTaskComponent implements OnDestroy {
       this.taskSubscription = this._taskService.createTask(payload).subscribe({
         next: () => {
           this.createTaskForm.reset();
-          this.notification.success('Tarefa criada com sucesso!')
+          this.notification.success({message: 'Tarefa criada com sucesso!', duration: 3000, orientation: PoToasterOrientation.Top})
         },
         error: (err) => {
           console.error('Error creating tasks', err);
@@ -59,7 +59,7 @@ export class CreateTaskComponent implements OnDestroy {
   }
   
   createTaskRequest(): ITaskRequest {
-    let userId = parseInt(window.localStorage.getItem('id_user')!);
+    let userId = parseInt(window.localStorage.getItem('userId')!);
     
     return {
       title: this.createTaskForm.get('title')?.value.trim(),

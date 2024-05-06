@@ -1,0 +1,9 @@
+main {
+    display: flex;
+    flex-direction: column;
+
+    .title-container {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+}
