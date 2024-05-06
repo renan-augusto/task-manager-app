@@ -1,4 +1,5 @@
 export interface IUserLogged {
     access_token: string,
-    id: number
+    id: number,
+    name: string
 }

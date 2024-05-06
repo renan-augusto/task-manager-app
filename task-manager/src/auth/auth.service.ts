@@ -84,7 +84,8 @@ export class AuthService implements OnModuleInit {
 
         const userLogged: IUserLogged = {
             access_token: token.access_token,
-            id: user.id
+            id: user.id,
+            name: user.firstName
         }
         
         return userLogged;
