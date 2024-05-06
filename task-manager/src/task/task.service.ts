@@ -10,11 +10,14 @@ export class TaskService {
         private _prisma: PrismaService,
     ) {}
 
-    async getTasks(id: string) {
+    async getTasks(userId: string) {
         try {
             const tasks = await this._prisma.task.findMany({
                 where: {
-                    userId: parseInt(id)
+                    userId: parseInt(userId)
+                },
+                orderBy: {
+                    id: 'asc',
                 },
                 select: {
                     id: true,
@@ -22,9 +25,10 @@ export class TaskService {
                     description: true,
                     completed: true,
                     completedAt: true,
+                    createdAt: true,
                     userId: true
                 }
-            })
+            });
 
             return tasks;
         } catch (err) {
