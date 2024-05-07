@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PoButtonModule, PoDividerModule, PoFieldModule, PoLoadingModule, PoModalModule, PoNotificationModule, PoNotificationService, PoToasterOrientation } from '@po-ui/ng-components';
 import { TaskService } from '../../../core/task.service';
-import { ITaskRequest } from '../../../models/task.interface';
+import { ITask, ITaskRequest } from '../../../models/task.interface';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -24,8 +24,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.scss'
 })
-export class CreateTaskComponent implements OnDestroy {
+export class CreateTaskComponent implements OnDestroy, OnChanges {
 
+  @Input() task?: ITask;
   @Output() onFormSuccess = new EventEmitter<boolean>();
 
   createTaskForm: FormGroup;
@@ -35,11 +36,28 @@ export class CreateTaskComponent implements OnDestroy {
     public notification: PoNotificationService,
     private _taskService: TaskService,
   ) {
-    this.createTaskForm = new FormGroup ({
-      title: new FormControl('', [Validators.required]),
-      description: new FormControl('', []),
-      completed: new FormControl(false, [])
-    })
+    const defaultFormValues = {
+      title: '',
+      description: '',
+      completed: false,
+    }
+    
+    const taskFormValues = this.task ? {
+      title: this.task.title,
+      description: this.task.description,
+      completed: this.task.completed,
+    } : defaultFormValues;
+    
+    this.createTaskForm = new FormGroup({
+      title: new FormControl(taskFormValues.title, [Validators.required]),
+      description: new FormControl(taskFormValues.description),
+      completed: new FormControl(taskFormValues.completed),
+    });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['task'] && !changes['task'].firstChange) {
+      this.createTaskForm
+    }
   }
   
   onCreateSubmit() {

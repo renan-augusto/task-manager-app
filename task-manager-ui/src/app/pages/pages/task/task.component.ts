@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PoButtonModule, PoDividerModule, PoModalComponent, PoModalModule, PoNotificationModule, PoNotificationService, PoTableAction, PoTableColumn, PoTableModule, PoToasterOrientation } from '@po-ui/ng-components';
 import { CreateTaskComponent } from '../../../shared/modals/create-task/create-task.component';
 import { TableColumsService } from '../../../core/table-colums.service';
-import { ITaskResponse } from '../../../models/task.interface';
+import { ITask, ITaskResponse } from '../../../models/task.interface';
 import { Subscription } from 'rxjs';
 import { TaskService } from '../../../core/task.service';
 
@@ -33,11 +33,12 @@ export class TaskComponent implements OnInit, OnDestroy {
   tasksTableColumns!: PoTableColumn[];
   tasks: ITaskResponse[] = [];
   actions: PoTableAction[] = [
-    {icon: 'po-icon po-icon-eye', label: 'Visualizar'},
+    {icon: 'po-icon po-icon-eye', label: 'Visualizar', action: this.viewTask.bind(this)},
     {icon: 'po-icon po-icon-edit', label: 'Alterar'},
-    {icon: 'po-icon po-icon-delete', label: 'Excluir'},
+    {icon: 'po-icon po-icon-delete', label: 'Excluir', type: 'danger'},
   ];
 
+  selectedTask: ITask | undefined;
   tasksSubscription!: Subscription;
 
 
@@ -75,6 +76,18 @@ export class TaskComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  viewTask(task: ITaskResponse) {
+    const taskToView: ITask = {
+      title: task.title,
+      description: task.description,
+      completed: task.completed,
+    }
+
+    this.selectedTask = taskToView;
+
+    this.createTaskModal?.open();
   }
 
   onTaskCreateModalClose() {
