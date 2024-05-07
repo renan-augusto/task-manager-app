@@ -7,6 +7,7 @@ O projeto propõe-se a criar um gerenciador de tarefas onde os usuários podem c
 - **NestJs**: Framework para Node.js que facilita a criação da lógica dos servidores.
 - **Postgre**: Sistema de gerenciamento de banco de dados relacional.
 - **Angular 17**: Framework de desenvolvimento front-end de aplicativos da web.
+- **PO UI**: Biblioteca de componentes baseado em Angular.
 - **Docker**: Facilita a criação, execução e implantação de aplicações em ambientes isolados
 
 ## Estrutura de Pastas:
