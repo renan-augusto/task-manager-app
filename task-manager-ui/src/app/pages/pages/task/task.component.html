@@ -30,6 +30,6 @@
         p-size="xl"
         (p-close)="onTaskCreateModalClose()"
     >
-        <create-task [task]="selectedTask" (onFormSuccess)="onTaskCreatedSuccess()"></create-task>
+        <create-task [task]="selectedTask" [taskState]="taskState" (onFormSuccess)="onTaskCreatedSuccess()" />
     </po-modal>
 </main>

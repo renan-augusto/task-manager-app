@@ -5,6 +5,7 @@ import { PoButtonModule, PoDividerModule, PoFieldModule, PoLoadingModule, PoModa
 import { TaskService } from '../../../core/task.service';
 import { ITask, ITaskRequest } from '../../../models/task.interface';
 import { Subscription } from 'rxjs';
+import { TaskState } from '../../../models/task-enum.enum';
 
 @Component({
   selector: 'create-task',
@@ -24,39 +25,42 @@ import { Subscription } from 'rxjs';
   templateUrl: './create-task.component.html',
   styleUrl: './create-task.component.scss'
 })
-export class CreateTaskComponent implements OnDestroy, OnChanges {
+export class CreateTaskComponent implements OnDestroy, OnChanges, OnInit {
 
   @Input() task?: ITask;
+  @Input() taskState: TaskState = TaskState.Create;
   @Output() onFormSuccess = new EventEmitter<boolean>();
 
   createTaskForm: FormGroup;
   taskSubscription?: Subscription;
 
+  inputDisable: string = 'false';
+
   constructor(
     public notification: PoNotificationService,
     private _taskService: TaskService,
   ) {
-    const defaultFormValues = {
-      title: '',
-      description: '',
-      completed: false,
-    }
-    
-    const taskFormValues = this.task ? {
-      title: this.task.title,
-      description: this.task.description,
-      completed: this.task.completed,
-    } : defaultFormValues;
-    
     this.createTaskForm = new FormGroup({
-      title: new FormControl(taskFormValues.title, [Validators.required]),
-      description: new FormControl(taskFormValues.description),
-      completed: new FormControl(taskFormValues.completed),
+      title: new FormControl('', [Validators.required]),
+      description: new FormControl(''),
+      completed: new FormControl(''),
     });
   }
+  ngOnInit(): void {
+    this.handleInputDisabled();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['task'] && !changes['task'].firstChange) {
-      this.createTaskForm
+      this.createTaskForm = new FormGroup({
+        title: new FormControl(this.task?.title, [Validators.required]),
+        description: new FormControl(this.task?.description),
+        completed: new FormControl(this.task?.completed)
+      })
+    }
+
+    if (changes['taskState'] && !changes['taskState'].firstChange) {
+      this.handleInputDisabled();
     }
   }
   
@@ -73,6 +77,24 @@ export class CreateTaskComponent implements OnDestroy, OnChanges {
           console.error('Error creating tasks', err);
         }
       });
+    }
+  }
+
+  onUpdateSubmit() {
+    
+  }
+
+  handleInputDisabled() {
+    switch(this.taskState) {
+      case TaskState.Create:
+        this.inputDisable = 'false';
+        break;
+      case TaskState.Update:
+        this.inputDisable = 'true';
+        break;
+      case TaskState.View:
+        this.inputDisable = 'true';
+        break;
     }
   }
   

@@ -3,9 +3,10 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PoButtonModule, PoDividerModule, PoModalComponent, PoModalModule, PoNotificationModule, PoNotificationService, PoTableAction, PoTableColumn, PoTableModule, PoToasterOrientation } from '@po-ui/ng-components';
 import { CreateTaskComponent } from '../../../shared/modals/create-task/create-task.component';
 import { TableColumsService } from '../../../core/table-colums.service';
-import { ITask, ITaskResponse } from '../../../models/task.interface';
+import { ITask, ITaskRequest, ITaskResponse } from '../../../models/task.interface';
 import { Subscription } from 'rxjs';
 import { TaskService } from '../../../core/task.service';
+import { TaskState } from '../../../models/task-enum.enum';
 
 @Component({
   selector: 'app-task',
@@ -34,12 +35,14 @@ export class TaskComponent implements OnInit, OnDestroy {
   tasks: ITaskResponse[] = [];
   actions: PoTableAction[] = [
     {icon: 'po-icon po-icon-eye', label: 'Visualizar', action: this.viewTask.bind(this)},
-    {icon: 'po-icon po-icon-edit', label: 'Alterar'},
+    {icon: 'po-icon po-icon-edit', label: 'Alterar', action: this.updateTask.bind(this)},
     {icon: 'po-icon po-icon-delete', label: 'Excluir', type: 'danger'},
   ];
 
   selectedTask: ITask | undefined;
   tasksSubscription!: Subscription;
+
+  taskState: TaskState = TaskState.Create;
 
 
   constructor(
@@ -55,6 +58,8 @@ export class TaskComponent implements OnInit, OnDestroy {
   }
   
   openCreateModal() {
+    this.taskState = TaskState.Create;
+    this.selectedTask = undefined;
     this.createTaskModal?.open();
   }
   
@@ -85,6 +90,22 @@ export class TaskComponent implements OnInit, OnDestroy {
       completed: task.completed,
     }
 
+    this.taskState = TaskState.View;
+    this.selectedTask = taskToView;
+
+    this.createTaskModal?.open();
+  }
+
+  updateTask(task: ITaskResponse){
+    const taskToView: ITaskRequest = {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      completed: task.completed,
+      userId: task.userId
+    }
+
+    this.taskState = TaskState.Update;
     this.selectedTask = taskToView;
 
     this.createTaskModal?.open();

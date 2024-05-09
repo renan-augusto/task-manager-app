@@ -21,7 +21,11 @@ export class TaskService {
   }
 
   getTasks(userId: string) {
-    return this._http.get<ITaskResponse[]>(`${this._baseUrl}task/get-tasks?userId=${userId}`)
+    return this._http.get<ITaskResponse[]>(`${this._baseUrl}task/get-tasks?userId=${userId}`);
+  }
+
+  updateTask(task: ITaskRequest) {
+    return this._http.put<ITaskResponse>(`${this._baseUrl}task/update-task`, task);
   }
 
 }

@@ -3,6 +3,7 @@
         <div class="form-container">
             <div class="task-data-container po-pt-2">
                 <po-input
+                    [p-disabled]="inputDisable"
                     class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
                     name="title"
                     id="title"
@@ -12,6 +13,7 @@
                     formControlName="title"
                 />
                 <po-switch 
+                    [p-disabled]="taskState == 'view'"
                     class="po-xl-6 po-lg-6 po-md-12 po-sm-12" 
                     name="completed" 
                     id="completed" 
@@ -21,6 +23,7 @@
                     formControlName="completed"
                 />
                 <po-textarea
+                    [p-disabled]="taskState == 'view'"
                     class="po-xl-12 po-lg-12 po-md-12 po-sm-12"
                     p-placeholder="Descrição"
                     p-label="Descrição"
@@ -32,11 +35,22 @@
             </div>
         </div>
     </form>
-    <po-button
-        class="po-xl-2 po-lg-2 po-md-12 po-sm-12"
-        p-label="Criar!"
-        [p-disabled]="!createTaskForm.valid"
-        (p-click)="onCreateSubmit()"
-        
-    />
+
+    @if(taskState == 'create') {
+        <po-button
+            class="po-xl-2 po-lg-2 po-md-12 po-sm-12"
+            p-label="Criar!"
+            [p-disabled]="!createTaskForm.valid"
+            (p-click)="onCreateSubmit()"
+            
+        />
+    } @else if (taskState == 'update') {
+        <po-button
+            class="po-xl-2 po-lg-2 po-md-12 po-sm-12"
+            p-label="Atualizar!"
+            [p-disabled]="!createTaskForm.valid"
+            (p-click)="onUpdateSubmit()"
+            
+        />
+    }
 </main>
