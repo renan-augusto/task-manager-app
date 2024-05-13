@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { PoChartModule } from '@po-ui/ng-components';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [
+    PoChartModule
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

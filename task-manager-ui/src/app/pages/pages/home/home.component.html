@@ -1,1 +1,23 @@
-<p>home works!</p>
+<main>
+    <section class="content-section">
+        <div class="title-container">
+            <h1 class="po-font-title">
+                Task manager
+            </h1>
+            <h2 class="po-font-subtitle">
+                Seu gerenciador de tarefas
+            </h2>
+            <h3 class="po-mt-3 po-font-text-large">Tarefas concluídas vs tarefas não concluídas</h3>
+        </div>
+        <section class="chart-section">
+            <div class="chart-container ">
+                <po-chart
+                    [p-series]="[
+                        {label: 'Tarefas concluídas', data: 3},
+                        {label: 'Tarefas não concluídas', data: 6}
+                    ]"
+                ></po-chart>
+            </div>
+        </section>
+    </section>
+</main>
