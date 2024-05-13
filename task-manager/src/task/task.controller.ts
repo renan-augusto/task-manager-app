@@ -41,4 +41,10 @@ export class TaskController {
     deleteTask(@Body() dto: DeleteTaskDto) {
         return this._taskService.deleteTask(dto);
     }
+
+    @UseGuards(JwtGuard)
+    @Get('tasks-chart')
+    getTasksChart(@Query('userId') userId: string){
+        return this._taskService.getTasksChart(userId)
+    }
 }

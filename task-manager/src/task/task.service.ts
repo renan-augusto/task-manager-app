@@ -149,6 +149,31 @@ export class TaskService {
         }
     }
 
+    async getTasksChart(userId: string ) {
+        try {
+            const completedTasksCount = await this._prisma.task.count({
+                where: {
+                    userId: parseInt(userId),
+                    completed: true,
+                },
+            });
+
+            const pedingTasksCount = await this._prisma.task.count({
+                where: {
+                    userId: parseInt(userId),
+                    completed: true,
+                },
+            });
+
+            return {
+                completed: completedTasksCount,
+                pending: pedingTasksCount
+            }
+        } catch (err) {
+            throw(err);
+        }
+    }
+
     isTaskCompleted(task: TaskDto | UpdateTaskDto) {
         let completedAt = null;
         if(task.completed == true) {
