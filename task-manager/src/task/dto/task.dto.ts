@@ -18,5 +18,5 @@ export class TaskDto {
 
     @IsNotEmpty()
     @ApiProperty()
-    userId: number;
+    userId: string;
 }

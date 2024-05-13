@@ -6,8 +6,4 @@ export class UpdateTaskDto extends TaskDto {
     @IsNotEmpty()
     @ApiProperty()
     id: number;
-
-    @IsNotEmpty()
-    @ApiProperty()
-    userId:number;
 }

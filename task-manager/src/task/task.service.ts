@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { TaskDto } from './dto';
 import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime/library';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { DeleteTaskDto } from './dto/delete-task.dto';
 
 @Injectable()
 export class TaskService {
@@ -73,7 +74,7 @@ export class TaskService {
                     description: dto.description,
                     completed: dto.completed,
                     completedAt: completedAt,
-                    userId: dto.userId
+                    userId: parseInt(dto.userId) 
                 },
                 select: {
                     id: true,
@@ -90,7 +91,7 @@ export class TaskService {
                 }
             }
 
-            throw err;
+            throw(err);
         }
     }
 
@@ -102,7 +103,7 @@ export class TaskService {
             const task = await this._prisma.task.update({
                 where: { 
                     id: dto.id,
-                    userId: dto.userId
+                    userId: parseInt(dto.userId) 
                 },
                 data: {
                     title: dto.title,
@@ -129,12 +130,12 @@ export class TaskService {
 
     }
 
-    async deleteTask(id) {
+    async deleteTask(dto: DeleteTaskDto) {
         try {
-            const taskId = parseInt(id);
             const task = await this._prisma.task.delete({
                 where: {
-                    id: taskId,
+                    id: dto.id,
+                    userId: parseInt(dto.userId),
                 }
             });
 

@@ -4,6 +4,7 @@ import { TaskService } from './task.service';
 import { JwtGuard } from 'src/auth/guard';
 import { TaskDto } from './dto';
 import { UpdateTaskDto } from './dto';
+import { DeleteTaskDto } from './dto/delete-task.dto';
 
 @ApiTags('task')
 @Controller('task')
@@ -32,12 +33,12 @@ export class TaskController {
     @UseGuards(JwtGuard)
     @Put('update-task')
     updateTask(@Body() dto: UpdateTaskDto) {
-        return this._taskService.updateTask(dto)
+        return this._taskService.updateTask(dto);
     }
 
     @UseGuards(JwtGuard)
     @Delete('delete-task')
-    deleteTask(@Query('taskId') id: string) {
-        return this._taskService.deleteTask(id)
+    deleteTask(@Body() dto: DeleteTaskDto) {
+        return this._taskService.deleteTask(dto);
     }
 }
