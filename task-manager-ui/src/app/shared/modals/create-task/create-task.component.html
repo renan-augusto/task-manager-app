@@ -2,6 +2,14 @@
     <form [formGroup]="createTaskForm">
         <div class="form-container">
             <div class="task-data-container po-pt-2">
+                @if(taskState == 'update') {
+                    <po-input 
+                        [hidden]="true"
+                        name="taskId"
+                        id="taskId"
+                        formControlName="taskId"
+                    />
+                }
                 <po-input
                     [p-disabled]="inputDisable"
                     class="po-xl-6 po-lg-6 po-md-12 po-sm-12"

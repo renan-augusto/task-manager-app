@@ -55,7 +55,8 @@ export class CreateTaskComponent implements OnDestroy, OnChanges, OnInit {
       this.createTaskForm = new FormGroup({
         title: new FormControl(this.task?.title, [Validators.required]),
         description: new FormControl(this.task?.description),
-        completed: new FormControl(this.task?.completed)
+        completed: new FormControl(this.task?.completed),
+        taskId: new FormControl(this.task?.id)
       })
     }
 
@@ -67,13 +68,14 @@ export class CreateTaskComponent implements OnDestroy, OnChanges, OnInit {
   onCreateSubmit() {
     if(this.createTaskForm.valid) {
       const payload: ITaskRequest = this.createTaskRequest();
-      
+      console.log(payload);
       this.taskSubscription = this._taskService.createTask(payload).subscribe({
         next: () => {
           this.createTaskForm.reset();
-          this.notification.success({message: 'Tarefa criada com sucesso!', duration: 3000, orientation: PoToasterOrientation.Top})
+          this.notification.success({message: 'Task criada com sucesso!', duration: 3000, orientation: PoToasterOrientation.Top});
         },
         error: (err) => {
+          this.notification.error({message: 'Erro ao criar a task, por favor tente novamente mais tarde', orientation: PoToasterOrientation.Top});
           console.error('Error creating tasks', err);
         }
       });
@@ -81,6 +83,28 @@ export class CreateTaskComponent implements OnDestroy, OnChanges, OnInit {
   }
 
   onUpdateSubmit() {
+    if(this.createTaskForm.valid) {
+      const payload: ITaskRequest = {
+        id: this.createTaskForm.get('taskId')?.value,
+        userId: window.localStorage.getItem('userId'),
+        title: this.createTaskForm.get('title')?.value.trim(),
+        description: this.createTaskForm.get('description')?.value ? this.createTaskForm.get('description')?.value : '',
+        completed: this.createTaskForm.get('completed')?.value == true ? this.createTaskForm.get('completed')?.value : false,
+      }
+
+      this.taskSubscription = this._taskService.updateTask(payload).
+      subscribe({
+        next: () => {
+          this.createTaskForm.reset();
+          this.notification.success({message: 'Task atualizada!', duration: 3000, orientation: PoToasterOrientation.Top});
+        },
+        error: (err) => {
+          this.notification.error({message: 'Erro ao atualizar a task, por favor tente novamente mais tarde', orientation: PoToasterOrientation.Top});
+          console.error('Error updating task', err);
+        }
+      })
+
+    }
     
   }
 

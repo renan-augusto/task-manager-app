@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PoButtonModule, PoDividerModule, PoModalComponent, PoModalModule, PoNotificationModule, PoNotificationService, PoTableAction, PoTableColumn, PoTableModule, PoToasterOrientation } from '@po-ui/ng-components';
 import { CreateTaskComponent } from '../../../shared/modals/create-task/create-task.component';
 import { TableColumsService } from '../../../core/table-colums.service';
-import { ITask, ITaskRequest, ITaskResponse } from '../../../models/task.interface';
+import { ITask, ITaskDelete, ITaskRequest, ITaskResponse } from '../../../models/task.interface';
 import { Subscription } from 'rxjs';
 import { TaskService } from '../../../core/task.service';
 import { TaskState } from '../../../models/task-enum.enum';
@@ -36,11 +36,12 @@ export class TaskComponent implements OnInit, OnDestroy {
   actions: PoTableAction[] = [
     {icon: 'po-icon po-icon-eye', label: 'Visualizar', action: this.viewTask.bind(this)},
     {icon: 'po-icon po-icon-edit', label: 'Alterar', action: this.updateTask.bind(this)},
-    {icon: 'po-icon po-icon-delete', label: 'Excluir', type: 'danger'},
+    {icon: 'po-icon po-icon-delete', label: 'Excluir', type: 'danger', action: this.deleteTask.bind(this)},
   ];
 
   selectedTask: ITask | undefined;
   tasksSubscription!: Subscription;
+  deleteTaskSubscription?: Subscription;
 
   taskState: TaskState = TaskState.Create;
 
@@ -96,6 +97,25 @@ export class TaskComponent implements OnInit, OnDestroy {
     this.createTaskModal?.open();
   }
 
+  deleteTask(task: ITaskResponse) {
+    const taskDeletePayload: ITaskDelete = {
+      id: task.id,
+      userId: task.userId
+    }
+
+    this.deleteTaskSubscription = this._taskService.deleteTask(taskDeletePayload).
+      subscribe({
+        next: () => {
+          this.notification.success({message: `Task ${task.title} deletada!`, duration: 3000, orientation: PoToasterOrientation.Top});
+          this.getTasks();
+        },
+        error: (err) => {
+          console.error(err);
+          this.notification.error({message: 'Erro ao deletar sua task, por favor tente novamente mais tarde', orientation: PoToasterOrientation.Top});
+        }
+      })
+  }
+
   updateTask(task: ITaskResponse){
     const taskToView: ITaskRequest = {
       id: task.id,
@@ -118,6 +138,9 @@ export class TaskComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if(this.tasksSubscription) {
       this.tasksSubscription.unsubscribe();
+    }
+    if(this.deleteTaskSubscription) {
+      this.deleteTaskSubscription.unsubscribe();
     }
   }
 }

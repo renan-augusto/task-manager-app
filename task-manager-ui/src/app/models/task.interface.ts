@@ -6,10 +6,15 @@ export interface ITask {
 }
 
 export interface ITaskRequest extends ITask {
-    userId: number | string,
+    userId?: number | string | null,
 }
 
 export interface ITaskResponse extends ITaskRequest {
     completedAt: Date,
     createdAt: Date
+}
+
+export interface ITaskDelete {
+    id?: string | number,
+    userId?: number | string | null,
 }
