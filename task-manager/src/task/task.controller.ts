@@ -44,7 +44,7 @@ export class TaskController {
 
     @UseGuards(JwtGuard)
     @Get('tasks-chart')
-    getTasksChart(@Query('userId') userId: string){
-        return this._taskService.getTasksChart(userId)
+    getTasksChart(@Query('userId') userId: string) {
+        return this._taskService.getTasksChart(userId);
     }
 }

@@ -161,14 +161,14 @@ export class TaskService {
             const pedingTasksCount = await this._prisma.task.count({
                 where: {
                     userId: parseInt(userId),
-                    completed: true,
+                    completed: false,
                 },
             });
 
-            return {
-                completed: completedTasksCount,
-                pending: pedingTasksCount
-            }
+            return [
+                {status: 'completed', data: completedTasksCount, label: 'Concluídas'},
+                {status: 'pending', data: pedingTasksCount, label: 'Pendentes'}
+            ]
         } catch (err) {
             throw(err);
         }
