@@ -9,15 +9,18 @@
             </h2>
             <h3 class="po-mt-3 po-font-text-large">Tarefas concluídas vs tarefas não concluídas</h3>
         </div>
-        <section class="chart-section">
-            <div class="chart-container ">
-                <po-chart
-                    [p-series]="[
-                        {label: 'Tarefas concluídas', data: 3},
-                        {label: 'Tarefas não concluídas', data: 6}
-                    ]"
-                ></po-chart>
+        @if(taskChart.length > 0) {
+            <section class="chart-section">
+                <div class="chart-container ">
+                    <po-chart
+                        [p-series]="chartSeries"
+                    />
+                </div>
+            </section>
+        } @else {
+            <div>
+                <h1>Não foram encontradas tasks.</h1>
             </div>
-        </section>
+        }
     </section>
 </main>

@@ -18,3 +18,9 @@ export interface ITaskDelete {
     id?: string | number,
     userId?: number | string | null,
 }
+
+export interface ITaskChart {
+    status: string;
+    data: number;
+    label: string;
+}
